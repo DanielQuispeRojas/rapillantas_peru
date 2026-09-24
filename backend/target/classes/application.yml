@@ -1,0 +1,6 @@
+server.port: 8080
+spring:
+  datasource: {url: jdbc:postgresql://localhost:5432/rapillantas, username: rapillantas_dev, password: 1234}
+  jpa: {hibernate: {ddl-auto: validate}, show-sql: false, open-in-view: false}
+reglas:
+  recordatorio-km: 10000

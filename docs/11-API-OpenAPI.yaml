@@ -1,0 +1,26 @@
+openapi: 3.0.3
+info: {title: Rapillantas API, version: 1.0.0}
+servers: [{url: /api/v1}]
+paths:
+  /auth/login: {post: {summary: JWT por rol ACT-001..004, tags: [auth]}}
+  /dashboard/resumen:
+    get: {summary: RF-03/07/11 ingresos vs físico, costo vs margen, tendencias, tags: [dashboard]}
+  /stock/movimientos: {get: {tags: [stock]}, post: {tags: [stock]}}
+  /stock/cierre: {post: {summary: RF-02 cierre mensual, tags: [stock]}}
+  /ocs: {get: {tags: [ocs]}, post: {tags: [ocs]}}
+  /ocs/{id}/recepcion: {post: {summary: RF-04 recepción parcial/total, tags: [ocs]}}
+  /productos/{id}/margen: {put: {summary: RF-06, tags: [productos]}}
+  /ventas: {get: {tags: [ventas]}, post: {summary: RF-08 transaccional, tags: [ventas]}}
+  /ventas/{id}/anular: {post: {summary: RF-09 con reverso, tags: [ventas]}}
+  /consignacion/liquidar: {post: {summary: RF-10 RN-01, tags: [consignacion]}}
+  /clientes: {post: {summary: RF-20 teléfono obligatorio 400 si falta, tags: [clientes]}}
+  /vehiculos: {post: {tags: [clientes]}, get: {tags: [clientes]}}
+  /os: {post: {summary: RF-22, tags: [taller]}, get: {tags: [taller]}}
+  /os/{id}/cerrar: {post: {summary: bloquea edición RN-04, tags: [taller]}}
+  /recordatorios/vencidos: {get: {summary: RF-23 regla 10k km, tags: [taller]}}
+  /puntos/{clienteId}: {get: {summary: RF-24, tags: [puntos]}}
+  /puntos/canje: {post: {summary: solo revision_suspension/frenos/rotacion, tags: [puntos]}}
+  /catalogo: {get: {summary: RF-25 público sin login, tags: [catalogo]}}
+components:
+  securitySchemes: {bearerAuth: {type: http, scheme: bearer, bearerFormat: JWT}}
+security: [{bearerAuth: []}]
