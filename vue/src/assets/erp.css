@@ -1,0 +1,154 @@
+/* ERP moderno Rapillantas — admin + taller (rojo / blanco / negro).
+   Las vistas usan HTML simple; este tema les da el acabado ERP sin reescribirlas. */
+.erp {
+  --erp-bg: #f4f5f7;
+  --erp-card: #ffffff;
+  --erp-ink: #2e2e33;
+  --erp-side: #26262b;
+  --erp-muted: #6b7280;
+  --erp-line: #e5e7eb;
+  --erp-red: #c8102e;
+  --erp-red-dark: #9c0b22;
+  --erp-green: #15803d;
+  --erp-amber: #b45309;
+  --erp-radius: 12px;
+  background: var(--erp-bg);
+  color: var(--erp-ink);
+  font-family: 'Barlow', system-ui, sans-serif;
+  min-height: 100vh;
+}
+.erp-shell { display: flex; min-height: 100vh; }
+
+/* — Sidebar — */
+.erp-side { width: 248px; flex-shrink: 0; background: var(--erp-side); color: #fff;
+  display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; }
+.erp-brand { padding: 24px 22px 8px; font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 22px; letter-spacing: 0.04em; text-transform: uppercase; }
+.erp-brand b { color: var(--erp-red); }
+.erp-user { padding: 0 22px 16px; font-size: 13px; color: rgba(255,255,255,.6); }
+.erp-user a { color: #fff; }
+.erp-nav { flex: 1; overflow-y: auto; padding: 8px 14px 20px; display: flex; flex-direction: column; gap: 2px; }
+.erp-nav h5 { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  color: rgba(255,255,255,.45); margin: 12px 8px 4px; }
+.erp-nav a { color: rgba(255,255,255,.82); text-decoration: none; font-size: 14px; font-weight: 500;
+  padding: 9px 10px; border-radius: 8px; display: block; }
+.erp-nav a:hover { background: rgba(255,255,255,.08); color: #fff; }
+.erp-nav a.router-link-exact-active { background: var(--erp-red); color: #fff; }
+
+/* — Zona principal — */
+.erp-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.erp-top { background: var(--erp-card); border-bottom: 1px solid var(--erp-line);
+  padding: 12px 24px; display: flex; align-items: center; gap: 12px;
+  position: sticky; top: 0; z-index: 10; }
+.erp-top .crumb { font-family: 'Barlow Condensed', sans-serif; font-size: 20px;
+  font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+.erp-body { padding: 24px; max-width: 1280px; width: 100%; margin: 0 auto; box-sizing: border-box; }
+.erp-body h1 { font-family: 'Barlow Condensed', sans-serif; font-size: 30px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.03em; margin: 0 0 12px; }
+.erp-body h2 { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.03em; margin: 22px 0 10px; }
+.erp-body h3 { font-size: 16px; margin: 16px 0 8px; }
+
+/* — Controles base — */
+.erp button { font-family: 'Barlow', sans-serif; font-size: 13.5px; font-weight: 600;
+  border: 1px solid var(--erp-line); background: var(--erp-card); color: var(--erp-ink);
+  border-radius: 8px; padding: 8px 14px; cursor: pointer; }
+.erp button:hover { border-color: var(--erp-ink); }
+.erp button:disabled { opacity: 0.45; cursor: not-allowed; }
+.erp button.primary, .erp-body > button:first-of-type { background: var(--erp-red); border-color: var(--erp-red); color: #fff; }
+.erp button.primary:hover { background: var(--erp-red-dark); }
+.erp input, .erp select, .erp textarea { font-family: 'Barlow', sans-serif; font-size: 14px;
+  border: 1px solid var(--erp-line); border-radius: 8px; padding: 8px 10px;
+  background: #fff; color: var(--erp-ink); }
+.erp input:focus, .erp select:focus, .erp textarea:focus { outline: 2px solid var(--erp-red); outline-offset: -1px; border-color: var(--erp-red); }
+.erp label { font-size: 13px; font-weight: 500; color: #374151; display: inline-flex;
+  flex-direction: column; gap: 4px; }
+.erp fieldset { border: 1px solid var(--erp-line);
+  border-radius: var(--erp-radius); background: var(--erp-card); padding: 14px 16px; }
+.erp legend { font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--erp-muted); padding: 0 6px; }
+.erp small { color: var(--erp-muted); }
+.erp .erp-body a, .erp p > a, .erp li > a { color: var(--erp-ink); }
+.erp .erp-body a:hover, .erp p > a:hover, .erp li > a:hover { color: var(--erp-red); }
+.erp-side a, .erp-taller .erp-top a, .erp-user a { color: #fff !important; }
+
+/* — Tablas ERP modernas — */
+.erp table { width: 100%; border-collapse: separate; border-spacing: 0; background: var(--erp-card);
+  border: 1px solid var(--erp-line); border-radius: var(--erp-radius); overflow: hidden;
+  font-size: 14px; margin: 10px 0; }
+.erp th { background: #fafafa; text-align: left; font-size: 11.5px; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase; color: var(--erp-muted);
+  padding: 10px 12px; border-bottom: 1px solid var(--erp-line); white-space: nowrap; }
+.erp td { padding: 10px 12px; border-bottom: 1px solid var(--erp-line); vertical-align: top; }
+.erp tr:last-child td { border-bottom: none; }
+.erp tbody tr:hover td { background: #fafafa; }
+.erp th.num, .erp td.num { text-align: right; white-space: nowrap; }
+/* — Botones de acción con icono (tablas): cuadrado compacto con tooltip — */
+.erp button.icon { width: 32px; height: 32px; padding: 0; display: inline-flex;
+  align-items: center; justify-content: center; font-size: 16px; }
+.erp button.icon.danger { color: #b91c1c; border-color: #fecaca; }
+.erp button.icon.danger:hover { background: #b91c1c; border-color: #b91c1c; color: #fff; }
+.erp ul { padding-left: 18px; }
+.erp li { margin: 4px 0; font-size: 14px; }
+
+/* — Paneles flotantes / destacados (se heredan) — */
+.erp [style*="border:2px solid"] { border-radius: var(--erp-radius) !important; background: #fff; }
+.erp [style*="background:#fef3c7"] { border-radius: 10px !important; }
+
+/* — Tabs estilo paginador — */
+.erp .tabs { display: flex; gap: 4px; border-bottom: 2px solid var(--erp-line); margin: 12px 0 18px; }
+.erp .tabs button { border: none; background: none; border-radius: 0; padding: 10px 18px;
+  font-size: 14px; font-weight: 600; color: var(--erp-muted); cursor: pointer;
+  border-bottom: 3px solid transparent; margin-bottom: -2px; }
+.erp .tabs button:hover { color: var(--erp-ink); border-color: var(--erp-line); }
+.erp .tabs button.on { color: var(--erp-red); border-bottom-color: var(--erp-red); font-weight: 700; }
+/* — Modales + acciones flotantes — */
+.erp .modal { position: fixed; inset: 0; background: rgba(20,20,20,.55); display: flex;
+  align-items: center; justify-content: center; z-index: 50; }
+.erp .modal-card { background: #fff; border-radius: 12px; padding: 20px; width: 94%;
+  max-width: 760px; max-height: 88vh; overflow: auto; }
+.erp .modal-head { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.erp .modal-head h2 { margin: 0; }
+.erp .title-row { display: flex; align-items: center; gap: 8px; }
+.erp .title-row h1 { margin: 0; }
+.erp .fab-stack { position: fixed; right: 18px; bottom: 18px; display: flex;
+  flex-direction: column; gap: 8px; z-index: 40; }
+.erp .fab-stack button { background: var(--erp-ink); border-color: var(--erp-ink); color: #fff;
+  border-radius: 999px; padding: 12px 18px; box-shadow: 0 4px 14px rgba(0,0,0,.25); }
+/* — Listas por cards (reemplazo responsivo de tablas) — */
+.erp .cards { display: grid; gap: 10px; margin: 10px 0; grid-template-columns: 1fr; }
+.erp .card-row { background: var(--erp-card); border: 1px solid var(--erp-line);
+  border-radius: var(--erp-radius); padding: 12px 14px; }
+.erp .card-top { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.erp .card-top strong { font-size: 15px; }
+.erp .card-top img { width: 48px; height: 48px; object-fit: cover; border-radius: 8px; }
+.erp .card-meta { color: var(--erp-muted); font-size: 13px; margin-top: 4px; }
+.erp .card-meta strong { color: var(--erp-ink); }
+.erp .card-actions { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+.erp .pill { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em;
+  padding: 2px 10px; border-radius: 999px; background: var(--erp-bg); color: var(--erp-muted); }
+.erp .pill.ok { background: #dcfce7; color: #15803d; }
+.erp .pill.warn { background: #fef3c7; color: #92400e; }
+.erp .pill.bad { background: #fee2e2; color: #b91c1c; }
+.erp .stars-static { color: #d97706; letter-spacing: 2px; }
+/* — Sugerencias de etiquetas (clic para agregar) — */
+.erp .tag-suggest { display: inline-block; border: 1px dashed var(--erp-line); background: #fafafa;
+  border-radius: 999px; padding: 4px 12px; margin: 2px 4px 2px 0; font-size: 13px; cursor: pointer; }
+.erp .tag-suggest:hover { border-color: var(--erp-red); color: var(--erp-red); }
+.erp-taller .erp-top { background: var(--erp-ink); color: #fff; border-bottom: none; }
+.erp-taller .erp-top a { color: #fff; }
+.erp-taller .erp-nav-pills { display: flex; gap: 8px; flex-wrap: wrap; padding: 12px 16px 0; }
+.erp-taller .erp-nav-pills a { background: var(--erp-card); border: 1px solid var(--erp-line);
+  color: var(--erp-ink); border-radius: 999px; padding: 8px 14px; font-size: 14px;
+  font-weight: 600; text-decoration: none; }
+.erp-taller .erp-nav-pills a.router-link-exact-active { background: var(--erp-red);
+  border-color: var(--erp-red); color: #fff; }
+.erp-taller .erp-body { padding: 16px; }
+.erp-taller .erp-body button { padding: 10px 14px; }
+@media (max-width: 900px) {
+  .erp-side { display: none; }
+  .erp-side.open { display: flex; position: fixed; z-index: 40; }
+  .erp-burger { display: inline-block !important; }
+}
+.erp-burger { display: none; }
+@media (min-width: 901px) { .erp-burger { display: none !important; } }

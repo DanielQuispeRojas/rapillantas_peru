@@ -1,0 +1,16 @@
+Cómo actualizar el carrusel manualmente
+==========================================
+
+1. Copia tus imágenes o videos (JPG/PNG/MP4) en esta carpeta:
+   vue/public/banners/
+
+2. Edita la lista `banners` en:
+   vue/src/views/public/Home.vue
+
+   Ejemplo:
+     const banners = ref([
+       { src: '/banners/promo-frenos.jpg', titulo: 'Promo frenos', subtitulo: 'Hasta agotar stock' },
+       { src: '/banners/alineamiento.jpg', titulo: 'Alineamiento 3D', subtitulo: 'Agenda por WhatsApp' },
+     ])
+
+3. Guarda y recarga la tienda. El carrusel rota solo cada 5 segundos.

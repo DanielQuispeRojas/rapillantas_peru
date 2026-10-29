@@ -1,0 +1,25 @@
+ACTORES:
+ACT-001 Administrador de lima
+ACT-002 Supervisor
+ACT-003 Administración Huancayo
+ACT-004 Mecanico
+
+NECESIDADES
+NEC-001 El usuario necesita realizar control de stock
+NEC-002 El usuario necesita registrar adquisiciones (orden de compra - OC)
+NEC-003 El usuario necesita poder ver los registros de adquisiciones (orden de compra - OC)
+NEC-004 El usuario necesita asignar margen de ganancia por producto
+NEC-005 El usuario necesita registrar ventas
+NEC-006 El usuario necesita ver registro de ventas
+NEC-007 El usuario necesita ver las tendencias de ventas
+NEC-008 El usuario necesita poder hacer y tener acceso a los expedientes técnicos de vehículos clientes
+NEC-009 El sistema debe avisar al cliente cada 10000 km para mantenimientos pertinentes
+NEC-010  El sistema debe registrar ordenes de Servicio (OS)
+
+STAKEHOLDERS:
+
+
+PENDIENTES:
+PEND-001 Definir misión y visión de la empresa
+PEND-002 Automatizar atencion de clientes mediante redes sociales. Podria usarse N8N
+

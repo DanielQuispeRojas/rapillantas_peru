@@ -12,6 +12,15 @@ Esta carpeta contiene el historial de contextos y sesiones de trabajo del proyec
 | [sesion-01.md](sesion-01.md) | Sesión de inicialización — definición de marco normativo |
 | [sesion-02.md](sesion-02.md) | Sesión de selección de modelo de ciclo de vida |
 | [sesion-03.md](sesion-03.md) | Requisitos ISO, arquitectura y slice Tienda+Ofertas |
+| [sesion-04.md](sesion-04.md) | Arranque verificado, wrapper Maven y dashboard mecánico |
+| [sesion-05.md](sesion-05.md) | Operativa completa: dashboard, OC, taller→caja, stock y expedientes |
+| [sesion-06.md](sesion-06.md) | Adquisiciones, consignación y auditoría RF |
+| [sesion-07.md](sesion-07.md) | Descuentos programados + recordatorios 10K |
+| [sesion-08.md](sesion-08.md) | Gastos operativos + reporte mensual |
+| [sesion-09.md](sesion-09.md) | Usuarios y auth JWT + perfil privado |
+| [sesion-10.md](sesion-10.md) | Tema Vibrants aplicado a la tienda |
+| [sesion-11.md](sesion-11.md) | Tema BMW+rojo, slider, empresa, comprobantes |
+| [sesion-12.md](sesion-12.md) | ERP, permisos por panel y tienda final |
 
 ## Iteraciones
 

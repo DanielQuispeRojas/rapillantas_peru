@@ -11,6 +11,8 @@ public class Usuario {
   @Column(nullable = false) public String nombre;
   @Column(nullable = false, unique = true) public String login;
   @Column(name = "pass_hash", nullable = false) public String passHash;
-  @Column(nullable = false) public String rol; // ADM_LIMA, SUPERVISOR, ADM_HYO, MECANICO
+  @Column(nullable = false) public String rol; // ADMIN, MECANICO, CLIENTE, COLABORADOR (VISITANTE = anónimo sin cuenta)
+  // Paneles con acceso (coma-separado) para COLABORADOR (y extras de MECANICO). ADMIN ve todo.
+  @Column(nullable = false) public String paneles = "";
   @Column(nullable = false) public boolean activo = true;
 }

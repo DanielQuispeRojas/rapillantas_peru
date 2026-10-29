@@ -1,73 +1,56 @@
-# rapillantas
+# RAPILLANTAS Web — Tienda pública + Dashboard admin
 
-This template should help get you started developing with Vue 3 in Vite.
+Sistema web para taller automotriz en Huancayo: tienda pública (neumáticos, refacciones, servicios, ofertas por WhatsApp) + dashboard admin (stock, OC, ventas, OS, clientes/vehículos, ofertas). Ver `docs/00-Indice-Maestro.md` (ISO 29148/12207/25010/29119/31000/42010) y `contexto-sesiones/`.
 
-## Recommended IDE Setup
+## Stack
+| Capa | Tech |
+|---|---|
+| Frontend | Vue 3 + TS + Router 4 + Pinia + Axios (`vue/`) |
+| Backend | Spring Boot 3.2 + Java 21 + JPA/Security/Validation (`backend/`) |
+| BD | PostgreSQL 15+ (`db/V1__schema.sql` + `db/V2__tienda.sql`) |
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## Estructura
+```
+backend/  API REST /api/v1 (puerto 8080)
+vue/      SPA tienda / + admin /admin (dev puerto 5173, VITE_API_URL)
+db/       migraciones V1 (núcleo) + V2 (tienda: ofertas, servicios, visible_tienda)
+docs/     BRS/StRS/SRS, trazabilidad, arquitectura, calidad, pruebas, riesgos, OpenAPI
+doc/      fuentes encuesta original
+contexto-sesiones/  sesiones e iteraciones del proyecto
+```
 
-## Recommended Browser Setup
+## Requisitos
+Java 21, Node 25 + npm, PostgreSQL 18. Maven no hace falta instalar: el repo trae wrapper (`backend/mvnw.cmd`).
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+## Arranque (verificado 24/09/2026)
+### 1. BD (desarrollo: Spring la genera sola — `ddl-auto: update`, sin psql manual)
+```powershell
+$env:PGPASSWORD='1234'
+psql -h localhost -U rapillantas_dev -d postgres -c "CREATE DATABASE rapillantas;"
+# listo: al arrancar el backend se crean/actualizan tablas y seeds (4 servicios, almacen, margen 30)
+```
+> Prod/final: perfil `prod` (`ddl-auto: validate`) + migraciones `db/V1..V8` en orden para
+> generar el .sql definitivo. Arranque prod: `.\mvnw.cmd spring-boot:run -Dspring-boot.run.profiles=prod`.
 
-## Type Support for `.vue` Imports in TS
+### 2. Backend
+```powershell
+cd backend
+.\mvnw.cmd spring-boot:run
+# espera: Started RapillantasApiApplication — prueba:
+#   http://localhost:8080/api/v1/servicios  (4 servicios seed)
+#   http://localhost:8080/api/v1/catalogo   ([] hasta crear productos)
+```
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
-```sh
+### 3. Frontend
+```powershell
+cd vue
 npm install
+npm run dev   # http://localhost:5173  (.env ya trae VITE_API_URL=http://localhost:8080/api/v1)
 ```
 
-### Compile and Hot-Reload for Development
+## URLs de prueba
+Tienda: `/ /neumaticos /refacciones /servicios /ofertas /contacto` · Admin: `/admin /admin/productos /admin/ofertas`.
 
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Run Unit Tests with [Vitest](https://vitest.dev/)
-
-```sh
-npm run test:unit
-```
-
-### Run End-to-End Tests with [Playwright](https://playwright.dev)
-
-```sh
-# Install browsers for the first run
-npx playwright install
-
-# When testing on CI, must build the project first
-npm run build
-
-# Runs the end-to-end tests
-npm run test:e2e
-# Runs the tests only on Chromium
-npm run test:e2e -- --project=chromium
-# Runs the tests of a specific file
-npm run test:e2e -- tests/example.spec.ts
-# Runs the tests in debug mode
-npm run test:e2e -- --debug
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+## Notas
+- V2 tiene `INSERT ... ON CONFLICT DO NOTHING` sin constraint único en servicios: si aplicas V2 dos veces se duplican; limpia con `DELETE FROM servicios a USING servicios b WHERE a.id > b.id AND a.nombre = b.nombre;`.
+- Seguridad temporal en `permitAll` salvo catálogo; JWT por roles ACT-001..004 va en I2 (`backend/.../config/SecurityConfig.java`).

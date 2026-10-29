@@ -1,0 +1,109 @@
+# Simulacion local del despliegue (fase previa a Render).
+# Replica la topologia del host con Postgres externas y perfiles prod:
+#   pg-moodu + moodu-core  |  pg-rapi + rapillantas-api  |  vue en dev fuera.
+#
+# Uso:
+#   docker compose -f docker-compose.sim.yml up --build -d
+#   docker compose -f docker-compose.sim.yml logs -f moodu-core rapillantas-api
+#   docker compose -f docker-compose.sim.yml down        (conserva los datos)
+#   docker compose -f docker-compose.sim.yml down -v     (borra las BDs)
+#
+# Puertos host: MOODU :8090 (el :8080 lo ocupa el backend VSC del usuario,
+# no se toca), sitio :8082 (el :8081 lo ocupa su backend propio, no se toca),
+# PG moodu :5433, PG sitio :5434.
+# El vue sigue en dev (:5173) con VITE_MOODU_URL=http://localhost:8090 y
+# VITE_API_URL=http://localhost:8082/api/v1 para la sim.
+#
+# Ceremonia tras levantar (una sola vez, ver sesion-14.md):
+#   1. MOODU setup con X-Setup-Token + admin + licencia sync + 7 apis web.
+#   2. Sitio: registro publico + UPDATE users SET rol='ADMIN' por psql (:5434).
+#   3. Puntos por SKU en Canjes y mercaderia/servicio de prueba en MOODU.
+#
+# Secretos: JWT_SECRET y MOODU_SETUP_TOKEN traen default SOLO para simular.
+# En el deploy real van generados por el host (Render generateValue) y el
+# setup-token se rota tras el primer admin (ver docs/despliegue-host.md).
+name: rapillantas-sim
+
+services:
+  pg-moodu:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: moodu
+      POSTGRES_USER: moodu_dev
+      POSTGRES_PASSWORD: moodu_dev
+    ports:
+      - "5433:5432"
+    volumes:
+      - pg-moodu:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U moodu_dev -d moodu"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  pg-rapi:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: rapillantas
+      POSTGRES_USER: rapillantas_dev
+      POSTGRES_PASSWORD: rapillantas123
+    ports:
+      - "5434:5432"
+    volumes:
+      - pg-rapi:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U rapillantas_dev -d rapillantas"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  moodu-core:
+    build: ../backend/core
+    depends_on:
+      pg-moodu:
+        condition: service_healthy
+    ports:
+      - "8090:8080"
+    environment:
+      PORT: 8080
+      DB_MOTOR: POSTGRESQL
+      DB_HOST: pg-moodu
+      DB_PORT: 5432
+      DB_NAME: moodu
+      DB_USER: moodu_dev
+      DB_PASSWORD: moodu_dev
+      DB_SSL: "false"
+      JWT_SECRET: sim-solomoodu-cambiar-en-host-real-0123456789abcdef
+      MOODU_SETUP_TOKEN: sim-setup-token-cambiar
+      CORS_ALLOWED_ORIGINS: http://localhost:5173,http://localhost:5174,http://localhost:8081
+    volumes:
+      - moodu-data:/data/moodu_data
+
+  rapillantas-api:
+    build: ./backend
+    depends_on:
+      pg-rapi:
+        condition: service_healthy
+    ports:
+      - "8082:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://pg-rapi:5432/rapillantas
+      SPRING_DATASOURCE_USERNAME: rapillantas_dev
+      SPRING_DATASOURCE_PASSWORD: rapillantas123
+      # SIMULACION: update crea el schema desde las entidades (las migraciones
+      # db/ aun no cubren el retiro del mini ERP; en el deploy real va
+      # validate + migracion V35, pendiente fase Render).
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      APP_CORS_ORIGINS: http://localhost:5173,http://localhost:5174
+      APP_JWT_SECRET: sim-solo-local-cambiar-en-host-real
+      APP_PORTADA_DIR: /data/portada
+    volumes:
+      - rapi-uploads:/data/uploads
+      - rapi-portada:/data/portada
+
+volumes:
+  pg-moodu:
+  pg-rapi:
+  moodu-data:
+  rapi-uploads:
+  rapi-portada:

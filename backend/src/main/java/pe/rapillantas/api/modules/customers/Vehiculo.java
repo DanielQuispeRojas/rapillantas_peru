@@ -13,4 +13,6 @@ public class Vehiculo {
   public String marca; public String modelo; public Integer anio;
   @Column(name = "km_actual", nullable = false) public int kmActual = 0;
   @Column(name = "ultimo_servicio_km") public Integer ultimoServicioKm;
+  // Km inicial al abrir el expediente: base del control 10K (NULL = sin medidor → se obvia)
+  @Column(name = "km_inicial") public Integer kmInicial;
 }

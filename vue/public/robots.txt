@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+Allow: /neumaticos
+Allow: /refacciones
+Allow: /servicios
+Allow: /ofertas
+Allow: /buscar
+Allow: /producto/
+Disallow: /admin
+Disallow: /taller
+Disallow: /perfil
+
+Sitemap: https://rapillantas.pe/sitemap.xml

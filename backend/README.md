@@ -7,6 +7,7 @@ Desacoplado de `vue/` (SPA). Ver `docs/09-Arquitectura.md`, `db/V1__schema.sql`,
 Patrón por módulo: `Controller → Service (@Transactional) → Repository (JPA) → Entity`. Validación: `telefono NOT NULL` (400), placa UNIQUE (409), OS cerrada inmutable (RN-04), consignación fuera de valorizado (RN-01).
 
 ## Arranque
-1. `createdb rapillantas && psql -f ../db/V1__schema.sql`
-2. `mvn spring-boot:run` → `http://localhost:8080/api/v1/catalogo`
-3. Frontend `vue/`: `VITE_API_URL=http://localhost:8080/api/v1`
+Arranque completo verificado en el `README.md` de la raíz. Resumen:
+1. Aplicar `../db/V1__schema.sql` y `../db/V2__tienda.sql` sobre `rapillantas` (ver raíz).
+2. `.\mvnw.cmd spring-boot:run` → `http://localhost:8080/api/v1/servicios`
+3. Frontend `vue/`: `npm run dev` con `VITE_API_URL=http://localhost:8080/api/v1`

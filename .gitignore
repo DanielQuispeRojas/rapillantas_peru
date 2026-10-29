@@ -1,0 +1,18 @@
+# Build
+backend/target/
+vue/dist/
+vue/dist-ssr/
+
+# IDE
+.idea/
+.vscode/*
+
+# Env (nunca commitear credenciales)
+.env
+.env.*
+!.env.example
+
+# Uploads locales y SO
+backend/uploads/
+.DS_Store
+Thumbs.db

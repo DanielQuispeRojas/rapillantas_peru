@@ -1,0 +1,6 @@
+# Perfil prod: valida el schema contra las migraciones db/V1..V8 (no toca la BD).
+# Datasource por variables de entorno en hosting (SPRING_DATASOURCE_URL/USERNAME/PASSWORD).
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate

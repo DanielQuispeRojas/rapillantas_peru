@@ -1,6 +1,20 @@
 server.port: 8080
+# Desarrollo: Hibernate BORRA y recrea todo el schema en cada arranque (ddl-auto:create-drop).
+# Ideal mientras el modelo cambia a cada rato: cero tablas huérfanas y cero líos de
+# dueños/permisos. OJO: los datos se pierden al reiniciar (solo quedan los seeds).
+# Cuando quieras conservar datos de prueba entre reinicios, cambia a update.
+# En prod se usa el perfil prod (validate) y db/V1..V8 es la fuente de verdad.
 spring:
   datasource: {url: jdbc:postgresql://localhost:5432/rapillantas, username: rapillantas_dev, password: 1234}
-  jpa: {hibernate: {ddl-auto: validate}, show-sql: false, open-in-view: false}
+  jpa: {hibernate: {ddl-auto: create-drop}, show-sql: false, open-in-view: false}
+  servlet.multipart: {max-file-size: 5MB, max-request-size: 50MB}
+app:
+  uploads-dir: ./uploads
+  # Flyer de portada: se guarda en el frontend (dev) para servirse directo y versionarse.
+  # En prod con jar suelto, apuntar a una ruta absoluta compartida.
+  portada-dir: ../vue/public/portada
+  # Google OAuth (Regístrate con Google): client ID de Google Cloud Console.
+  # Vacío = botón desactivado. En prod: GOOGLE_CLIENT_ID por env.
+  google-client-id: ${GOOGLE_CLIENT_ID:}
 reglas:
   recordatorio-km: 10000

@@ -68,7 +68,16 @@ El proyecto RAPILLANTAS se sustenta en las siguientes normativas ISO:
 | S01 | 09/09/2026 | Creación de contexto, establecimiento de normativas base | `sesion-01.md` |
 | S02 | 09/09/2026 | Selección de modelo de ciclo de vida, definición de incrementos | `sesion-02.md` |
 | S03 | 23-24/09/2026 | Requisitos ISO aprobados, arquitectura desacoplada, backend I1 + slice tienda | `sesion-03.md` |
+| S04 | 24/09/2026 | Arranque verificado, wrapper Maven, admin oculto y dashboard mecánico | `sesion-04.md` |
+| S05 | 24/09/2026 | Operativa completa: dashboard+proyección, OC dual, taller→caja, stock+inventario, expedientes | `sesion-05.md` |
+| S06 | 24/09/2026 | Adquisiciones (renombre) + consignación RF-10 + auditoría RF-01→26 | `sesion-06.md` |
+| S07 | 24/09/2026 | Descuentos programados + categorías + recordatorios 10K por expediente | `sesion-07.md` |
+| S08 | 24/09/2026 | Gastos operativos + reporte mensual ganado-vs-gastado | `sesion-08.md` |
+| S09 | 24/09/2026 | Usuarios y auth JWT (VISITANTE/CLIENTE/MECANICO/ADMIN) + perfil privado | `sesion-09.md` |
+| S10 | 24/09/2026 | Tema Vibrants aplicado a la tienda pública | `sesion-10.md` |
+| S11 | 24/09/2026 | Tema BMW+rojo, slider portada, empresa, comprobantes, catálogo marketplace | `sesion-11.md` |
+| S12 | 24/09/2026 | ERP admin/taller, permisos por panel, tienda final y fixes | `sesion-12.md` |
 
 ---
 
-*Última actualización: 24/09/2026 — I0 completada (stack definido: Spring Boot 3.2 + PostgreSQL + Vue Router/Pinia/axios; ver sesion-03).
+*Última actualización: 24/09/2026 — S12 cierre del día (todo verificado; siguiente: RF-24/RF-26).
