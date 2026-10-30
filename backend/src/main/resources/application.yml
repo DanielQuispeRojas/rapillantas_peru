@@ -5,7 +5,7 @@ server.port: 8080
 # Cuando quieras conservar datos de prueba entre reinicios, cambia a update.
 # En prod se usa el perfil prod (validate) y db/V1..V8 es la fuente de verdad.
 spring:
-  datasource: {url: jdbc:postgresql://localhost:5432/rapillantas, username: rapillantas_dev, password: 1234}
+  datasource: {url: jdbc:postgresql://localhost:5432/rapillantas, username: moodu_dev, password: 1234}
   jpa: {hibernate: {ddl-auto: create-drop}, show-sql: false, open-in-view: false}
   servlet.multipart: {max-file-size: 5MB, max-request-size: 50MB}
 app:

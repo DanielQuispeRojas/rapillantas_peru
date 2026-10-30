@@ -29,14 +29,22 @@ async function load() {
     // por etiquetas (tags) y, como red de seguridad, por nombre/descripcion.
     if (props.categoria) {
       const c = props.categoria.toLowerCase()
-      const porTag = lista.filter((p: any) => tagsDe(p.etiquetas).includes(c)
-        || (p.etiquetas ?? '').toLowerCase().includes(c))
-      if (porTag.length) {
-        lista = porTag
+      // La vista de refacciones SOLO lee items cuya etiqueta sea
+      // "refaccion" o "refacciones" (no se cae a busqueda por nombre).
+      if (c === 'refaccion') {
+        const tagsRef = ['refaccion', 'refacciones']
+        lista = lista.filter((p: any) =>
+          tagsDe(p.etiquetas).some((t) => tagsRef.includes(t)))
       } else {
-        const porNombre = lista.filter((p: any) =>
-          ((p.nombre ?? '') + ' ' + (p.descripcion ?? '')).toLowerCase().includes(c))
-        if (porNombre.length) lista = porNombre
+        const porTag = lista.filter((p: any) => tagsDe(p.etiquetas).includes(c)
+          || (p.etiquetas ?? '').toLowerCase().includes(c))
+        if (porTag.length) {
+          lista = porTag
+        } else {
+          const porNombre = lista.filter((p: any) =>
+            ((p.nombre ?? '') + ' ' + (p.descripcion ?? '')).toLowerCase().includes(c))
+          if (porNombre.length) lista = porNombre
+        }
       }
     }
     todos.value = lista

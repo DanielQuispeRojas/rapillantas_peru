@@ -15,4 +15,15 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
+  server: {
+    port: 5174,
+    host: true,
+    allowedHosts: true,
+    // Un solo tunel (frontend) sirve tambien a las dos APIs:
+    // /api -> backend rapillantas (8081), /pub -> backend MOODU (8080).
+    proxy: {
+      '/api': { target: 'http://localhost:8081', changeOrigin: true },
+      '/pub': { target: 'http://localhost:8080', changeOrigin: true },
+    },
+  },
 })
