@@ -20,6 +20,21 @@ public class JwtFilter extends OncePerRequestFilter {
     this.jwt = jwt;
   }
 
+  // Rutas públicas (espejo de SecurityConfig). Un token inválido/expirado en
+  // estas rutas NO debe bloquear: se limpia el contexto y se sigue como anónimo.
+  // Esto evita que un token viejo en localStorage rompa el login desde un túnel
+  // (el frontend adjunta el token si existe, aunque la ruta sea pública).
+  private static final java.util.List<String> RUTAS_PUBLICAS = java.util.List.of(
+      "/api/v1/auth/", "/api/v1/tienda/", "/api/v1/ofertas", "/api/v1/sku/",
+      "/api/v1/compatibilidad/", "/api/v1/puntos", "/api/v1/canjeables",
+      "/api/v1/portada", "/api/v1/empresa", "/api/v1/valoraciones",
+      "/uploads/", "/actuator/health");
+
+  private boolean esRutaPublica(String path) {
+    for (var r : RUTAS_PUBLICAS) if (path.startsWith(r)) return true;
+    return false;
+  }
+
   @Override
   protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain)
       throws ServletException, IOException {
@@ -36,12 +51,14 @@ public class JwtFilter extends OncePerRequestFilter {
         auth.setDetails(d);
         SecurityContextHolder.getContext().setAuthentication(auth);
       } catch (Exception e) {
-        // Token presente pero inválido/expirado: 401 directo (no seguir como anónimo).
         SecurityContextHolder.clearContext();
-        res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        res.setContentType("application/json");
-        res.getWriter().write("{\"error\":\"sesión expirada o inválida\"}");
-        return;
+        // En rutas públicas no bloqueamos: el request sigue como anónimo.
+        if (!esRutaPublica(req.getRequestURI())) {
+          res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+          res.setContentType("application/json");
+          res.getWriter().write("{\"error\":\"sesión expirada o inválida\"}");
+          return;
+        }
       }
     }
     chain.doFilter(req, res);

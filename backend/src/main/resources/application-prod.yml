@@ -1,6 +1,15 @@
 # Perfil prod: valida el schema contra las migraciones db/V1..V8 (no toca la BD).
-# Datasource por variables de entorno en hosting (SPRING_DATASOURCE_URL/USERNAME/PASSWORD).
+# Datasource por variables de entorno del host (sin defaults: si faltan, falla
+# al arrancar en lugar de caer a credenciales de desarrollo).
+#   DB_URL=jdbc:postgresql://host:5432/rapillantas
+#   DB_USER=...
+#   DB_PASS=...
+#   (Spring Boot tambien acepta SPRING_DATASOURCE_URL/USERNAME/PASSWORD.)
 spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASS}
   jpa:
     hibernate:
       ddl-auto: validate

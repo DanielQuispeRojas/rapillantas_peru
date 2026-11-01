@@ -1,13 +1,23 @@
-server.port: 8080
+server.port: ${SERVER_PORT:8080}
 # Desarrollo: Hibernate BORRA y recrea todo el schema en cada arranque (ddl-auto:create-drop).
 # Ideal mientras el modelo cambia a cada rato: cero tablas huérfanas y cero líos de
 # dueños/permisos. OJO: los datos se pierden al reiniciar (solo quedan los seeds).
 # Cuando quieras conservar datos de prueba entre reinicios, cambia a update.
 # En prod se usa el perfil prod (validate) y db/V1..V8 es la fuente de verdad.
 spring:
-  datasource: {url: jdbc:postgresql://localhost:5432/rapillantas, username: moodu_dev, password: 1234}
-  jpa: {hibernate: {ddl-auto: create-drop}, show-sql: false, open-in-view: false}
-  servlet.multipart: {max-file-size: 5MB, max-request-size: 50MB}
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/rapillantas}
+    username: ${DB_USER:moodu_dev}
+    password: ${DB_PASS:1234}
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+    open-in-view: false
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 50MB
 app:
   uploads-dir: ./uploads
   # Flyer de portada: se guarda en el frontend (dev) para servirse directo y versionarse.

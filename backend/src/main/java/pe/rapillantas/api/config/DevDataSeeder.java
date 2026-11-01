@@ -43,13 +43,18 @@ public class DevDataSeeder {
           slides.save(s);
         }
       }
-      // ADMIN inicial dev (cámbialo en prod): login admin / clave admin123
+      // ADMIN inicial dev: login/clave por env (defaults solo para dev local).
+      // En prod el perfil "!prod" desactiva este seed; el primer admin se crea
+      // manualmente o via setup. Nunca commitees una clave real aqui.
+      var adminLogin = System.getenv().getOrDefault("ADMIN_LOGIN", "admin");
+      var adminPass  = System.getenv().getOrDefault("ADMIN_PASSWORD", "admin123");
+      var adminNombre = System.getenv().getOrDefault("ADMIN_NOMBRE", "Administrador");
       var users = ctx.getBean(pe.rapillantas.api.modules.auth.UsuarioRepository.class);
-      if (users.findByLogin("admin").isEmpty()) {
+      if (users.findByLogin(adminLogin).isEmpty()) {
         var a = new pe.rapillantas.api.modules.auth.Usuario();
-        a.nombre = "Administrador";
-        a.login = "admin";
-        a.passHash = ctx.getBean(org.springframework.security.crypto.password.PasswordEncoder.class).encode("admin123");
+        a.nombre = adminNombre;
+        a.login = adminLogin;
+        a.passHash = ctx.getBean(org.springframework.security.crypto.password.PasswordEncoder.class).encode(adminPass);
         a.rol = "ADMIN";
         users.save(a);
       }

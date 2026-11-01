@@ -1,13 +1,20 @@
 import axios from 'axios'
 
 export const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL ?? 'http://localhost:8080/api/v1',
+  baseURL: import.meta.env.VITE_API_URL ?? '/api/v1',
 })
 
 // JWT: se adjunta solo si hay sesión (visitantes navegan sin token)
 api.interceptors.request.use((cfg) => {
-  const t = localStorage.getItem('token')
-  if (t) cfg.headers.Authorization = `Bearer ${t}`
+  // En rutas de auth NO se adjunta token (evita que un token viejo bloquee el login
+  // cuando se accede desde un túnel/remoto).
+  const url = (cfg.url ?? '').toString()
+  const esAuth = url.includes('/auth/login') || url.includes('/auth/registro') ||
+    url.includes('/auth/google') || url.includes('/auth/google-client-id')
+  if (!esAuth) {
+    const t = localStorage.getItem('token')
+    if (t) cfg.headers.Authorization = `Bearer ${t}`
+  }
   return cfg
 })
 
@@ -54,6 +61,6 @@ export const imgSrc = (url?: string | null) => {
   if (!url) return ''
   if (/^(https?:|data:|blob:)/.test(url)) return url
   if (url.startsWith('/portada/') || url.startsWith('/banners/')) return url
-  const base = (import.meta.env.VITE_API_URL as string | undefined) ?? 'http://localhost:8080/api/v1'
+  const base = (import.meta.env.VITE_API_URL as string | undefined) ?? (window.location.origin + '/api/v1')
   return base.replace(/\/api\/v1\/?$/, '') + url
 }

@@ -55,13 +55,25 @@ public class SecurityConfig {
   @Bean
   org.springframework.web.cors.CorsConfigurationSource corsConfig() {
     var c = new org.springframework.web.cors.CorsConfiguration();
-    // Orígenes del frontend (dev + prod). Ajusta por env: APP_CORS_ORIGINS coma-separado.
+    // Orígenes del frontend (dev + prod + túneles). Ajusta por env:
+    // APP_CORS_ORIGINS coma-separado (acepta patrones con *).
+    // Se usan PATRONES (no orígenes exactos) para soportar túneles de
+    // Cloudflare (https://*.trycloudflare.com) y cualquier puerto de localhost
+    // (el frontend dev corre en 5173/5174 y el backend en 8080/8081/8082).
     String extra = System.getenv().getOrDefault("APP_CORS_ORIGINS", "");
-    var origenes = new java.util.ArrayList<>(java.util.List.of("http://localhost:5173"));
-    for (var o : extra.split(",")) if (!o.isBlank()) origenes.add(o.trim());
-    c.setAllowedOrigins(origenes);
-    c.setAllowedMethods(java.util.List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+    var patrones = new java.util.ArrayList<>(java.util.List.of(
+        "http://localhost:*",
+        "http://127.0.0.1:*",
+        "https://*.trycloudflare.com",
+        "https://*.cloudflare.com",
+        "https://*.cfargotunnel.com"));
+    for (var o : extra.split(",")) if (!o.isBlank()) patrones.add(o.trim());
+    c.setAllowedOriginPatterns(patrones);
+    // JWT via header Authorization: no hace falta credentials (cookies).
+    c.setAllowCredentials(false);
+    c.setAllowedMethods(java.util.List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
     c.setAllowedHeaders(java.util.List.of("*"));
+    c.setExposedHeaders(java.util.List.of("Authorization"));
     var s = new org.springframework.web.cors.UrlBasedCorsConfigurationSource();
     s.registerCorsConfiguration("/**", c);
     return s;
